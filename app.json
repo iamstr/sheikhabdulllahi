@@ -1,0 +1,20 @@
+{
+  "name": "waqaf",
+  "displayName": "waqaf",
+  "expo": {
+    "name": "waqaf",
+    "slug": "expo-template-bare",
+    "privacy": "unlisted",
+    "icon": "./icons8-user-90.png",
+
+    "sdkVersion": "35.0.0",
+    "version": "1.0.0",
+    "entryPoint": "node_modules/expo/AppEntry.js",
+    "platforms": ["ios", "android", "web"],
+    "description": "",
+    "githubUrl": "https://github.com/iamstr/waqaf.git",
+    "android": {
+      "package": "com.iamstr.waqaf"
+    }
+  }
+}
