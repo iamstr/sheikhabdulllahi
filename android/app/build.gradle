@@ -102,8 +102,8 @@ android {
         applicationId "com.waqaf"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.1.0"
     }
     splits {
         abi {
@@ -139,8 +139,9 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-community_async-storage')
     
-    implementation project(':react-native-sqlite-2')
+   
     implementation project(':react-native-linear-gradient')
     implementation project(':react-native-screens')
     implementation project(':react-native-reanimated')

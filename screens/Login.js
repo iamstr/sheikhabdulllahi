@@ -1,12 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import * as React from "react";
 import { StatusBar, StyleSheet, View, AsyncStorage } from "react-native";
-<<<<<<< HEAD
-
-import { Button, Input } from "react-native-elements";
-import config from "../lib/config";
-=======
->>>>>>> master-sqlite
 
 import { Button, Input } from "react-native-elements";
 import config from "../lib/config";
@@ -27,53 +21,13 @@ export default class Login extends React.Component {
     super(props);
 
     this.state = {
-<<<<<<< HEAD
       user: "",
       phone: "",
       name: "",
       clients_id: ""
     };
   }
-  async _store(state) {
-    try {
-      return {
-        user_id: await AsyncStorage.setItem(
-          "clients_id",
-          JSON.stringify(state.clients_id)
-        ),
-        house: await AsyncStorage.setItem("house", JSON.stringify(state.house)),
-        name: await AsyncStorage.setItem("name", JSON.stringify(state.name)),
-        phone: await AsyncStorage.setItem("phone", JSON.stringify(state.phone))
-      };
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
-  async auth(phone, user) {
-    try {
-      let phoneAsync = await AsyncStorage.setItem("phone", phone);
-      let userAsync = await AsyncStorage.setItem("user", user);
-      let formBody = [];
 
-      const dbData = new FormData();
-      dbData.append("userName", user);
-      dbData.append("phoneNumber", phone);
-      for (let property in this.state) {
-        let encodedKey = encodeURIComponent(property);
-        let encodedValue = encodeURIComponent(this.state[property]);
-        formBody.push(encodedKey + "=" + encodedValue);
-      }
-      formBody = formBody.join("&");
-
-      fetch(`${config.url}client`, {
-=======
-      username: "",
-      phone: "",
-      house: "",
-      userID: "",
-      user: ""
-    };
-  }
   componentWillUnmount() {
     this.state = {};
   }
@@ -130,49 +84,22 @@ export default class Login extends React.Component {
       }
       formBody = formBody.join("&");
 
-<<<<<<< HEAD
-      fetch("http://192.168.1.204/mosque/resources/api/get_client.php", {
->>>>>>> master-sqlite
-        method: "POST",
-        body: dbData
-      })
-=======
       fetch(
-        "http://http://sheikhabdullahi.co.ke/mosque/resources/api/get_client.php",
+        "http://sheikhabdullahi.co.ke/mosque/resources/api/get_client.php",
         {
           method: "POST",
           body: dbData
         }
       )
->>>>>>> connected to the sheikhabdullahi endpoint
         .then(response => response.json())
         .then(responseJson => {
           if (responseJson.hasOwnProperty("userID")) {
-<<<<<<< HEAD
-            console.log(responseJson);
-
-            this.setState({ ...responseJson });
-            this._stored(this.setState({ ...responseJson }))
-              .then(function() {})
-              .catch(function(error) {
-                console.log(
-                  "There has been a problem with async storage  " +
-                    error.message
-                );
-              });
-            let userID = AsyncStorage.getItem("name");
-            return console.log(JSON.stringify({ ...this.state }));
-
-            this.props.navigation.navigate("Home", { ...this.state });
-            //
-=======
             this.setState({ ...responseJson });
             console.log(this.state);
 
             //this._store(this.setState({ ...responseJson }));
 
             this._store({ ...this.state });
->>>>>>> master-sqlite
           }
 
           //

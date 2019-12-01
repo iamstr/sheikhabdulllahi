@@ -7,11 +7,8 @@ import {
   AsyncStorage
 } from "react-native";
 import { createDrawerNavigator } from "react-navigation-drawer";
-<<<<<<< HEAD
-=======
 import * as SQLite from "expo-sqlite";
 
->>>>>>> master-sqlite
 import config from "../lib/config";
 import List from "./components/List";
 import Report from "./components/Report";
@@ -19,19 +16,8 @@ import logo from "./icons8-user-90.png";
 import Leakage from "./Leakage";
 import Logout from "./Logout";
 import Payment from "./Payments";
-<<<<<<< HEAD
-
-=======
 const db = SQLite.openDatabase("test.db");
->>>>>>> master-sqlite
-// const MenuIcon = ({ navigate }) => (
-//   <Icon
-//     name="three-bars"
-//     size={30}
-//     color="#000"
-//     onPress={() => navigate("DrawerOpen")}
-//   />
-// );
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
@@ -45,48 +31,6 @@ class Home extends React.Component {
       previous: "",
       consumption: "",
       balance: "",
-<<<<<<< HEAD
-      water_charges: ""
-    };
-
-    this._getData();
-  }
-  async _getData() {
-    try {
-      this.setState({
-        house: await AsyncStorage.getItem("house"),
-        name: await AsyncStorage.getItem("name"),
-        phone: await AsyncStorage.getItem("phone"),
-        clients_id: await AsyncStorage.getItem("user_id")
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
-  componentDidMount() {
-    (function() {
-      fetch(`${config.home + this.state.clients_id}`, {
-        method: "GET"
-      })
-        .then(response => response.json())
-        .then(responseJson => {
-          console.log(responseJson);
-          this.setState({
-            balance: responseJson.balance,
-            amount_due: responseJson.amount_due,
-            water_charges: responseJson.water_charges,
-            previous: responseJson.previous,
-            current: responseJson.current,
-            consumption: responseJson.consumption
-          });
-          return Alert.alert(JSON.stringify(responseJson));
-        })
-        .catch(function(error) {
-          Alert.alert("There has been a problem  " + error.message);
-          console.log(error.message);
-        });
-    })();
-=======
       water_charges: "",
       userID: ""
     };
@@ -126,7 +70,7 @@ class Home extends React.Component {
   fetch = async id => {};
   componentDidUpdate() {
     fetch(
-      "http://http://sheikhabdullahi.co.ke/mosque/resources/api/get_info.php?user=" +
+      "http://sheikhabdullahi.co.ke/mosque/resources/api/get_info.php?user=" +
         this.state.userID,
       {
         method: "GET"
@@ -164,7 +108,6 @@ class Home extends React.Component {
       });
 
     //return this.state;
->>>>>>> master-sqlite
   }
 
   static navigationOptions = ({ navigation }) => ({

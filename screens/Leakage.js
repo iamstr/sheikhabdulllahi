@@ -74,7 +74,7 @@ export default class Logout extends Component {
       formBody = formBody.join("&");
 
       fetch(
-        "http://http://sheikhabdullahi.co.ke/mosque/resources/api/new_report.php",
+        "http://sheikhabdullahi.co.ke/mosque/resources/api/new_report.php",
         {
           method: "POST",
           body: dbData

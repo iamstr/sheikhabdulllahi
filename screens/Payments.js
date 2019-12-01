@@ -62,18 +62,15 @@ export default class Payment extends React.Component {
       formBody = formBody.join("&");
 
       AsyncStorage.getItem("user").then(value => {
-        console.log("this is the value from async storage", String(value));
+        console.log("this is the FINAL STATE from async storage", this.state);
 
         this.setState({ userID: String(value) });
       });
 
-      fetch(
-        "http://http://sheikhabdullahi.co.ke/mosque/resources/api/payment.php",
-        {
-          method: "POST",
-          body: dbData
-        }
-      )
+      fetch("http://sheikhabdullahi.co.ke/mosque/resources/api/payment.php", {
+        method: "POST",
+        body: dbData
+      })
         .then(response => response.json())
         .then(responseJson => {
           console.log(responseJson);

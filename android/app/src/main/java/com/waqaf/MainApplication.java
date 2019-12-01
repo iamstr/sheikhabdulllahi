@@ -3,8 +3,9 @@ package com.waqaf;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.asyncstorage.AsyncStoragePackage;
 
-import dog.craftz.sqlite_2.RNSqlite2Package;
+//import dog.craftz.sqlite_2.RNSqlite2Package;
 import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -39,7 +40,9 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(new MainReactPackage(), new AsyncStoragePackage(), new RNSqlite2Package(),
+      return Arrays.<ReactPackage>asList(new MainReactPackage(), new AsyncStoragePackage(), // new
+                                                                                            // AsyncStoragePackage(), //
+                                                                                            // new RNSqlite2Package(),
           new LinearGradientPackage(), new ReanimatedPackage(), new RNGestureHandlerPackage(), new RNScreensPackage(),
           new ModuleRegistryAdapter(mModuleRegistryProvider));
     }

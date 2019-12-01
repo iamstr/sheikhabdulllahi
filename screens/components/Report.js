@@ -54,40 +54,23 @@ export default class Report extends Component {
 
   render() {
     const gradient = `linear-gradient(23deg, rgba(30,10,209,1) 0%, rgba(18,166,226,1) 59%)`;
-<<<<<<< HEAD
-    const { info } = this.props;
-=======
-
->>>>>>> master-sqlite
     const items = [
       {
         name: "Name",
         style: "style.header",
-<<<<<<< HEAD
-        value: info.name
-=======
         value: this.state.username
->>>>>>> master-sqlite
       },
 
       {
         name: "house",
         style: "style.header",
-<<<<<<< HEAD
-        value: info.house
-=======
         value: this.state.house
->>>>>>> master-sqlite
       },
 
       {
         name: "amount_due",
         style: "style.header",
-<<<<<<< HEAD
-        value: info.amount_due
-=======
         value: this.state.amount_due
->>>>>>> master-sqlite
       }
     ];
     return (
@@ -99,25 +82,9 @@ export default class Report extends Component {
           {items.map((l, i) => (
             <View key={i}>
               <Text style={styles.header}>{l.name}</Text>
-<<<<<<< HEAD
-              <Text style={styles.info}>{info.value}</Text>
-            </View>
-          ))}
-          {/* <Text style={styles.header}>Name</Text>
-          <Text style={styles.info}>{info.name}</Text>
-          <Text style={styles.header}>House No</Text>
-          <Text style={styles.info}>{info.house}</Text>
-          <Text style={styles.header}>Amount due</Text>
-          <Text style={styles.info}>{info.amount_due}</Text> */}
-        </View>
-
-        <View>
-          <Icon name="ios-person" type="ionicon" color="white" />
-=======
               <Text style={styles.info}>{l.value}</Text>
             </View>
           ))}
->>>>>>> master-sqlite
         </View>
       </LinearGradient>
     );

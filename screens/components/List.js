@@ -1,12 +1,8 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ListItem } from "react-native-elements";
-<<<<<<< HEAD
-
-=======
 import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("test.db");
->>>>>>> master-sqlite
 const styles = StyleSheet.create({
   list: {
     flex: 1,
@@ -28,11 +24,6 @@ const styles = StyleSheet.create({
 export default class List extends Component {
   constructor(props) {
     super(props);
-<<<<<<< HEAD
-  }
-  render() {
-    const { info } = this.props;
-=======
     this.state = {};
   }
   _getData = async () => {
@@ -69,47 +60,30 @@ export default class List extends Component {
     });
   }
   render() {
->>>>>>> master-sqlite
     const list = [
       {
         name: "Current Reading",
         avatar_url:
           "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-<<<<<<< HEAD
-        subtitle: info.current || 0
-=======
         subtitle: this.state.current
->>>>>>> master-sqlite
       },
       {
         name: "Previous Reading",
         avatar_url:
           "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
-<<<<<<< HEAD
-        subtitle: info.previous || 0
-=======
         subtitle: this.state.previous
->>>>>>> master-sqlite
       },
       {
         name: "Consumption",
         avatar_url:
           "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
-<<<<<<< HEAD
-        subtitle: info.consumption || 0
-=======
         subtitle: this.state.consumption
->>>>>>> master-sqlite
       },
       {
         name: "Balance Brought Forward",
         avatar_url:
           "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
-<<<<<<< HEAD
-        subtitle: info.balance || 0
-=======
         subtitle: this.state.balance
->>>>>>> master-sqlite
       }
     ];
     return (
@@ -129,11 +103,7 @@ export default class List extends Component {
 
           <ListItem
             title="Water Charges"
-<<<<<<< HEAD
-            subtitle={this.props.info.water_charges}
-=======
             subtitle={this.state.water_charges}
->>>>>>> master-sqlite
             bottomDivider
           />
         </View>
