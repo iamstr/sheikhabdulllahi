@@ -1,10 +1,9 @@
 import { LinearGradient } from "expo-linear-gradient";
-import * as React from "react";
-import { StatusBar, StyleSheet, View, AsyncStorage } from "react-native";
-
-import { Button, Input } from "react-native-elements";
-import config from "../lib/config";
 import * as SQLite from "expo-sqlite";
+import * as React from "react";
+import { AsyncStorage, StatusBar, StyleSheet, View } from "react-native";
+import { Button, Input } from "react-native-elements";
+
 const db = SQLite.openDatabase("test.db");
 export default class Login extends React.Component {
   static navigationOptions = navigation => ({
@@ -55,6 +54,7 @@ export default class Login extends React.Component {
 
   _store = async state => {
     try {
+      await AsyncStorage.setItem("userID", state.userID);
       db.transaction(tx => {
         tx.executeSql("DROP TABLE IF items ");
         tx.executeSql(
@@ -95,7 +95,7 @@ export default class Login extends React.Component {
         .then(responseJson => {
           if (responseJson.hasOwnProperty("userID")) {
             this.setState({ ...responseJson });
-            console.log(this.state);
+            console.log("we are at the login...", this.state);
 
             //this._store(this.setState({ ...responseJson }));
 
@@ -104,7 +104,7 @@ export default class Login extends React.Component {
 
           //
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("There has been a problem  " + error.message);
         });
     } catch (error) {

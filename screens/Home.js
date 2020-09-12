@@ -1,21 +1,14 @@
-import React from "react";
-import {
-  Alert,
-  Image,
-  ScrollView,
-  StyleSheet,
-  AsyncStorage
-} from "react-native";
-import { createDrawerNavigator } from "react-navigation-drawer";
 import * as SQLite from "expo-sqlite";
-
-import config from "../lib/config";
+import React from "react";
+import { AsyncStorage, Image, ScrollView, StyleSheet } from "react-native";
+import { createDrawerNavigator } from "react-navigation-drawer";
 import List from "./components/List";
 import Report from "./components/Report";
 import logo from "./icons8-user-90.png";
 import Leakage from "./Leakage";
 import Logout from "./Logout";
 import Payment from "./Payments";
+
 const db = SQLite.openDatabase("test.db");
 
 class Home extends React.Component {
@@ -35,77 +28,49 @@ class Home extends React.Component {
       userID: ""
     };
   }
+
+  async setStorage(reading) {
+    try {
+      await AsyncStorage.setItem("current", String(reading.current));
+
+      await AsyncStorage.setItem("previous", String(reading.previous));
+    } catch {}
+  }
   async _getData() {
     try {
-      db.transaction(tx => {
-        tx.executeSql("select * from items", [], (_, { rows }) => {
-          let obj;
-          obj = rows._array[0];
-          this.setState({ ...obj });
-          AsyncStorage.setItem(
-            "user",
-            String(JSON.stringify(this.state.userID))
-          );
-          return obj;
-        });
+      AsyncStorage.getItem("userID").then(value => {
+        this.setState({ userID: String(value) });
+
+        fetch(
+          "http://sheikhabdullahi.co.ke/mosque/resources/api/reading.php?client=" +
+            String(value),
+          {
+            method: "GET"
+          }
+        )
+          .then(response => response.json())
+          .then(responseJson => {
+            this.setState({ ...responseJson });
+            setStorage(responseJson);
+          })
+          .catch(error => {});
       });
+
+      // });
+      // });
     } catch (error) {
       console.log(error.message);
     }
   }
   componentDidMount() {
-    this._getData()
-      .then(function(obj) {
-        db.transaction(tx => {});
-      })
-      .catch(error => {
-        console.log(
-          " we could not understand what you were impplying" + error.message
-        );
-      });
-
+    this._getData();
     //
   }
 
-  fetch = async id => {};
-  componentDidUpdate() {
-    fetch(
-      "http://sheikhabdullahi.co.ke/mosque/resources/api/get_info.php?user=" +
-        this.state.userID,
-      {
-        method: "GET"
-      }
-    )
-      .then(response => response.json())
-      .then(responseJson => {
-        db.transaction(tx => {
-          let obj = { ...responseJson };
-
-          tx.executeSql("delete from readings");
-          tx.executeSql(
-            "insert into readings( current, previous, consumption, balance, water_charges, client_house, clients_id, date, month, amount_due) values (?, ?,?,?,?,?,?,?,?,?)",
-            [
-              obj.current,
-              obj.previous,
-              obj.consumption,
-              obj.balance,
-              obj.water_charges,
-              this.state.house,
-              this.state.userID,
-              obj.date,
-              obj.month,
-              obj.amount_due
-            ],
-            (_, { rows }) => {},
-            (t, error) => {
-              console.log(error);
-            }
-          );
-        });
-      })
-      .catch(function(error) {
-        console.log(error.message);
-      });
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevState.current !== this.state.current) {
+      this._getData();
+    }
 
     //return this.state;
   }
@@ -132,8 +97,13 @@ class Home extends React.Component {
           image={require("./icons8-user-90.png")}
           style={styles.report}
           info={this.state}
+          userID={this.state.userID}
         />
-        <List info={this.state} />
+        <List
+          current={this.state.current}
+          previous={this.state.previous}
+          userID={this.state.userID}
+        />
       </ScrollView>
     );
   }

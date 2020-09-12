@@ -1,7 +1,7 @@
+import * as SQLite from "expo-sqlite";
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { ListItem } from "react-native-elements";
-import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("test.db");
 const styles = StyleSheet.create({
   list: {
@@ -27,37 +27,41 @@ export default class List extends Component {
     this.state = {};
   }
   _getData = async () => {
-    db.transaction(tx => {
-      tx.executeSql("select * from items", [], (_, { rows }) => {
-        let obj;
-        obj = rows._array[0];
-        this.setState({ ...obj });
+    try {
+      let formBody = [];
 
-        return obj;
-      });
-    });
+      const dbData = new FormData();
+      dbData.append("client", this.props.userID);
+
+      for (let property in this.state) {
+        let encodedKey = encodeURIComponent(property);
+        let encodedValue = encodeURIComponent(this.state[property]);
+        formBody.push(encodedKey + "=" + encodedValue);
+      }
+      formBody = formBody.join("&");
+      fetch(
+        "http://sheikhabdullahi.co.ke/mosque/resources/api/get_payment_table_client.php",
+
+        {
+          method: "POST",
+          body: dbData
+        }
+      )
+        .then(response => response.json())
+        .then(responseJson => {
+          this.setState({ ...responseJson });
+        })
+        .catch(error => {});
+    } catch (error) {}
   };
   componentDidMount() {
-    this._getData().then(obj => {
-      db.transaction(tx => {
-        tx.executeSql(
-          "select * from readings where clients_id=?",
-          [this.state.userID],
-          (_, { rows }) => {
-            let obj,
-              length = rows.length - 1;
-            obj = rows._array[+length];
-            this.setState({ ...obj });
-            console.log(
-              "this is the object from the report ",
+    this._getData().then(() => {});
+  }
 
-              JSON.stringify(rows)
-            );
-            return obj;
-          }
-        );
-      });
-    });
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.userID !== prevProps.userID) {
+      this._getData();
+    }
   }
   render() {
     const list = [
@@ -65,19 +69,19 @@ export default class List extends Component {
         name: "Current Reading",
         avatar_url:
           "https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg",
-        subtitle: this.state.current
+        subtitle: this.props.current
       },
       {
         name: "Previous Reading",
         avatar_url:
           "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
-        subtitle: this.state.previous
+        subtitle: this.props.previous
       },
       {
         name: "Consumption",
         avatar_url:
           "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg",
-        subtitle: this.state.consumption
+        subtitle: this.state.bill
       },
       {
         name: "Balance Brought Forward",
@@ -92,7 +96,7 @@ export default class List extends Component {
           <ListItem
             key={i}
             title={l.name}
-            subtitle={this.props.info.subtitle}
+            subtitle={l.subtitle}
             bottomDivider
           />
         ))}
@@ -101,11 +105,7 @@ export default class List extends Component {
             <Text style={styles.text}> Current Charges</Text>
           </View>
 
-          <ListItem
-            title="Water Charges"
-            subtitle={this.state.water_charges}
-            bottomDivider
-          />
+          <ListItem title="Water Charges" subtitle="1000" bottomDivider />
         </View>
       </View>
     );

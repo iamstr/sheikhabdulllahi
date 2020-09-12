@@ -1,8 +1,13 @@
 import React, { Component } from "react";
 import { StyleSheet } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { createStackNavigator } from "react-navigation-stack";
+import adminNavigator from "./screens/Admin";
 import MyDrawerNavigator from "./screens/Home";
 import Login from "./screens/Login";
+import SplashScreen from "./screens/SplashScreen";
+
+const loading = createStackNavigator({ splash: SplashScreen, Login });
 
 const styles = StyleSheet.create({
   container: {
@@ -20,10 +25,11 @@ const styles = StyleSheet.create({
 const RootStack = createSwitchNavigator(
   {
     Home: MyDrawerNavigator,
-    Login
+    loading,
+    adminNavigator
   },
   {
-    initialRouteName: "Login"
+    initialRouteName: "loading"
   }
 );
 

@@ -1,8 +1,8 @@
 import { LinearGradient } from "expo-linear-gradient";
+import * as SQLite from "expo-sqlite";
 import React, { Component } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { Icon } from "react-native-elements";
-import * as SQLite from "expo-sqlite";
 const db = SQLite.openDatabase("test.db");
 export default class Report extends Component {
   constructor(props) {
@@ -26,34 +26,74 @@ export default class Report extends Component {
       console.log(error.message);
     }
   };
-  componentDidMount() {
-    this._getData().then(obj => {
-      db.transaction(tx => {
-        tx.executeSql(
-          "select * from readings where clients_id=?",
-          [this.state.userID],
-          (_, { rows }) => {
-            let obj,
-              length = rows.length - 1;
-            obj = rows._array[+length];
-            this.setState({ ...obj });
-            console.log(
-              "this is the object from the report ",
+  _fetchData = async user => {
+    try {
+      let formBody = [];
 
-              JSON.stringify(rows)
-            );
-            return obj;
-          },
-          (t, error) => {
-            console.log(error);
-          }
-        );
-      });
-    });
+      const dbData = new FormData();
+      dbData.append("client... ", this.props.userID);
+      console.log("we have finallyyyy have our man 😎...", this.state.userID);
+
+      fetch(
+        "http://sheikhabdullahi.co.ke/mosque/resources/api/get_payment_table_client.php",
+
+        {
+          method: "POST",
+          body: dbData
+        }
+      )
+        .then(response => response.json())
+        .then(responseJson => {
+          console.log(
+            responseJson,
+            " apparently this is the Report response..."
+          );
+          this.setState({ ...responseJson });
+        })
+        .catch(() => {});
+    } catch (error) {}
+  };
+  componentDidMount() {
+    this._getData()
+      .then(() => {
+        db.transaction(tx => {
+          tx.executeSql(
+            "select * from readings where clients_id=?",
+            [this.state.userID],
+            (_, { rows }) => {
+              let obj,
+                length = rows.length - 1;
+              obj = rows._array[+length];
+              this.setState({ ...obj });
+              console.log(
+                "this is the object from the report ",
+
+                this.state
+              );
+              return obj;
+            },
+            (t, error) => {
+              console.log(error);
+            }
+          );
+        });
+      })
+      .then(() => this._fetchData(this.state.userID));
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log(
+      this.state.amount,
+      "lets look at the difference🤔...",
+      prevState.amount
+    );
+    if (this.state.amount !== prevState.amount) {
+      this._fetchData(this.props.userID);
+      console.log("hooraAAAAAY🎉🎉🎉");
+    }
   }
 
   render() {
-    const gradient = `linear-gradient(23deg, rgba(30,10,209,1) 0%, rgba(18,166,226,1) 59%)`;
     const items = [
       {
         name: "Name",
@@ -70,7 +110,7 @@ export default class Report extends Component {
       {
         name: "amount_due",
         style: "style.header",
-        value: this.state.amount_due
+        value: this.state.amount
       }
     ];
     return (

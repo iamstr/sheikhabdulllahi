@@ -1,16 +1,15 @@
 import { LinearGradient } from "expo-linear-gradient";
 import * as React from "react";
 import {
+  Alert,
+  AsyncStorage,
   Image,
   StatusBar,
   StyleSheet,
   Text,
-  View,
-  AsyncStorage,
-  Alert
+  View
 } from "react-native";
 import { Button, Input } from "react-native-elements";
-import Icon from "react-native-vector-icons/Octicons";
 
 export default class Payment extends React.Component {
   static navigationOptions = {
@@ -51,8 +50,8 @@ export default class Payment extends React.Component {
       let formBody = [];
 
       const dbData = new FormData();
-      dbData.append("userID", this.state.userID);
-      dbData.append("code", this.state.code);
+      dbData.append("client", this.state.userID);
+      dbData.append("mpesa", this.state.code);
       dbData.append("amount", this.state.amount);
       for (let property in this.state) {
         let encodedKey = encodeURIComponent(property);
@@ -86,7 +85,7 @@ export default class Payment extends React.Component {
 
           //
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log("There has been a problem  " + error.message);
         });
     } catch (error) {
